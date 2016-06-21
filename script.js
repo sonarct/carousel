@@ -25,8 +25,6 @@ ImageRotator.prototype = {
 			return index_;
 		};
 
-		function highMath(t) { return (t*=2) <1 ? t*t/2 : -(--t*(t-2)-1)/2 };
-
 		var frameNext = this.images[calculateIndex(this.indexNext)];
 		var framePrev = this.images[calculateIndex(this.indexPrev)];
 

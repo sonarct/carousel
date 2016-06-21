@@ -1,60 +1,69 @@
-var	x0 = 400,
-	y0 = 300,
-	radiusX = 300,
-	radiusY = 100,
-	angle = 1,
-	offsetX = 0,
-	offsetY = 0,
-	speed = 200;
+var	x0 = window.innerWidth / 2
+,	y0 = window.innerHeight / 2
+,	radiusX = 300
+,	radiusY = 50
+,	angle = 0
+,	speed = 0.005
+
+var dAngle = 0
+,	div = []
+,	myDrag = new Drag(document)
+,	myMomentum = new Momentum
 
 
-var div1 = document.getElementById('div1');
-var div2 = document.getElementById('div2');
-var div3 = document.getElementById('div3');
-var div4 = document.getElementById('div4');
-var div5 = document.getElementById('div5');
-var div6 = document.getElementById('div6');
-var div7 = document.getElementById('div7');
-var div8 = document.getElementById('div8');
-var div9 = document.getElementById('div9');
-var div10 = document.getElementById('div10');
-
-var debug = document.getElementById('debug');
-
+for (var i = 0; i < 10; i++) {
+	div[i] = document.createElement('div')
+	div[i].id = 'div' + i
+	div[i].className = 'round'
+	div[i].innerHTML = i
+	document.body.appendChild(div[i])
+}
 
 
 function animate() {
-	drawObject(div1, 1.0,  1.0, 0);
-	drawObject(div2, 1.3, 1.2, 90);
-	drawObject(div3, 0.7,  0.8, 180);
-
-	requestAnimationFrame(animate);
-};
-
-
-animate();
-
-
-function showDebugInfo() {
-	//debug.innerHTML = x + '<br>' + y + '<br>' + scale + '<br>' + opacity + '<br>';
-};
-
-
-function drawObject(div, perspectiveX, perspectiveY, angleOffset) {
-
-	var x = x0 + perspectiveX * radiusX * Math.cos(angle + angleOffset);
-	var y = y0 + perspectiveY * radiusY * Math.sin(angle + angleOffset);
-
-	var scale = Math.abs(Math.sin((angle + angleOffset + Math.PI/2)/2));
-	var opacity = Math.abs(Math.sin((angle + angleOffset + Math.PI/2)/2));
+	calculateAngle()
+	drawObject(div[9], angleOffset(0)   , 0)
+	drawObject(div[8], angleOffset(1/10), -150)
+	drawObject(div[7], angleOffset(2/10), 0)
+	drawObject(div[6], angleOffset(3/10), 150)
+	drawObject(div[5], angleOffset(4/10), 0)
+	drawObject(div[4], angleOffset(5/10), -150)
+	drawObject(div[3], angleOffset(6/10), 0)
+	drawObject(div[2], angleOffset(7/10), 150)
+	drawObject(div[1], angleOffset(8/10), 0)
+	drawObject(div[0], angleOffset(9/10), -150)
+	requestAnimationFrame(animate)
+}
 
 
-	div.style.zIndex = Math.round(x);
-	div.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + scale + ')';
-	div.style.opacity = opacity;
-};
+animate()
 
 
-window.addEventListener('mousemove', function(e) {
-	angle = - e.clientX / 50;
-})
+function drawObject(div, angleOffset, diffHeight) {
+	x0 = window.innerWidth / 2
+	y0 = window.innerHeight / 2
+	z0 = 0
+
+	var x = x0 - radiusX * Math.cos(angle + angleOffset)
+	,	y = y0 + radiusY * Math.sin(angle + angleOffset)
+	,	z = z0 + diffHeight
+
+	var scale = Math.abs(Math.sin((angle + angleOffset + Math.PI / 2) / 2))
+	if (scale < 0.4) {scale = 0.4}
+	var opacity = Math.abs(Math.sin((angle + angleOffset + Math.PI / 2) / 2))
+	if (opacity < 0.99) {opacity = opacity * opacity * opacity}
+
+	div.style.zIndex = Math.round(y)
+	div.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + scale + ')'
+	div.style.opacity = opacity
+}
+
+
+function calculateAngle() {
+	angle = myDrag.offset.x * speed
+}
+
+
+function angleOffset(myAngle) {
+	return myAngle = myAngle * 2 * Math.PI
+}
