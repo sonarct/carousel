@@ -1,0 +1,25 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+
+
+.round {
+	position: absolute;
+	text-align: center;
+	width: 100px;
+	height: 100px;
+	background-color: pink;
+	border-color: black;
+	border-width: 5px;
+	border-style: solid;
+}
+
+
+#debug {
+	position: absolute;
+	top: 0px;
+	background-color: yellow;
+	border-color: yellow;
+}
