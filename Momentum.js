@@ -30,9 +30,10 @@ Momentum.prototype = {
 			z: +point.z || 0,
 			t: this.time()
 		})
-
-		var oversize = this.points.length - this.pointCount
-		if(oversize > 0) this.points.splice(0, oversize)
+		// var oversize = this.points.length - this.pointCount
+		// if(oversize > 0) this.points.splice(0, oversize)
+			
+		if(this.points.length > this.pointCount) this.points.shift()
 	},
 
 	start: function() {
@@ -109,7 +110,6 @@ Momentum.prototype = {
 		if(!this.active) return
 
 		this.events.emit('stop')
-		this.reset()
 		this.active = false
 	}
 }

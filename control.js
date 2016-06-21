@@ -9,11 +9,6 @@ var dAngle 	= 0
 ,	div 	= []
 ,	myDrag 	= new Drag(document)
 ,	myMomentum = new Momentum
-,	coordinates = {
-	x: myDrag.offset.x,
-	y: myDrag.offset.y,
-	z: myDrag.offset.z
-}
 
 
 for (var i = 0; i < 10; i++) {
@@ -26,9 +21,13 @@ for (var i = 0; i < 10; i++) {
 
 
 function animate() {
-	calculateAngle()
-	myMomentum.push(coordinates)
+	
+	myMomentum.push(myDrag.offset)
 	myMomentum.update()
+	if (myMomentum.active) {
+		myDrag.offset.x = myMomentum.point.x
+	}
+	calculateAngle()
 	drawObject(div[9], angleOffset(0)   , 0)
 	drawObject(div[8], angleOffset(1/10), -150)
 	drawObject(div[7], angleOffset(2/10), 0)
@@ -56,9 +55,9 @@ function drawObject(div, angleOffset, diffHeight) {
 	,	z = z0 + diffHeight
 
 	var scale = Math.abs(Math.sin((angle + angleOffset + Math.PI / 2) / 2))
-	if (scale < 0.4) scale = 0.4
+	if(scale < 0.4) scale = 0.4
 	var opacity = Math.abs(Math.sin((angle + angleOffset + Math.PI / 2) / 2))
-	if (opacity < 0.99) opacity = opacity * opacity * opacity
+	if(opacity < 0.99) opacity = opacity * opacity * opacity
 
 	div.style.zIndex = Math.round(y)
 	div.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + scale + ')'
@@ -74,3 +73,21 @@ function calculateAngle() {
 function angleOffset(myAngle) {
 	return myAngle = myAngle * 2 * Math.PI
 }
+
+
+document.addEventListener('mouseup', function() {
+	myMomentum.push(myDrag.offset)
+	myMomentum.start()
+})
+
+
+document.addEventListener('mousedown', function() {
+	myMomentum.stop()
+})
+
+
+myDrag.events.on('mousedown', function() {
+	console.log('123')
+})
+
+//myDrag.events.emit('mousedown')
