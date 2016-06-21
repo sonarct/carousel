@@ -2,18 +2,23 @@ var	x0 = window.innerWidth / 2
 ,	y0 = window.innerHeight / 2
 ,	radiusX = 300
 ,	radiusY = 50
-,	angle = 0
-,	speed = 0.005
+,	angle 	= 0
+,	speed	= 0.005
 
-var dAngle = 0
-,	div = []
-,	myDrag = new Drag(document)
+var dAngle 	= 0
+,	div 	= []
+,	myDrag 	= new Drag(document)
 ,	myMomentum = new Momentum
+,	coordinates = {
+	x: myDrag.offset.x,
+	y: myDrag.offset.y,
+	z: myDrag.offset.z
+}
 
 
 for (var i = 0; i < 10; i++) {
-	div[i] = document.createElement('div')
-	div[i].id = 'div' + i
+	div[i]			 = document.createElement('div')
+	div[i].id		 = 'div' + i
 	div[i].className = 'round'
 	div[i].innerHTML = i
 	document.body.appendChild(div[i])
@@ -22,6 +27,8 @@ for (var i = 0; i < 10; i++) {
 
 function animate() {
 	calculateAngle()
+	myMomentum.push(coordinates)
+	myMomentum.update()
 	drawObject(div[9], angleOffset(0)   , 0)
 	drawObject(div[8], angleOffset(1/10), -150)
 	drawObject(div[7], angleOffset(2/10), 0)
@@ -49,9 +56,9 @@ function drawObject(div, angleOffset, diffHeight) {
 	,	z = z0 + diffHeight
 
 	var scale = Math.abs(Math.sin((angle + angleOffset + Math.PI / 2) / 2))
-	if (scale < 0.4) {scale = 0.4}
+	if (scale < 0.4) scale = 0.4
 	var opacity = Math.abs(Math.sin((angle + angleOffset + Math.PI / 2) / 2))
-	if (opacity < 0.99) {opacity = opacity * opacity * opacity}
+	if (opacity < 0.99) opacity = opacity * opacity * opacity
 
 	div.style.zIndex = Math.round(y)
 	div.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + scale + ')'
