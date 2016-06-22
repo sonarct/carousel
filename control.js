@@ -75,19 +75,12 @@ function angleOffset(myAngle) {
 }
 
 
-document.addEventListener('mouseup', function() {
+myDrag.events.on('end', function() {
 	myMomentum.push(myDrag.offset)
 	myMomentum.start()
 })
 
 
-document.addEventListener('mousedown', function() {
+myDrag.events.on('drag', function() {
 	myMomentum.stop()
 })
-
-
-myDrag.events.on('mousedown', function() {
-	console.log('123')
-})
-
-//myDrag.events.emit('mousedown')

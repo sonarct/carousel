@@ -10,6 +10,7 @@ Momentum.prototype = {
 	threshold: 1e-5,
 
 	reset: function() {
+		this.active = false
 		this.points = []
 
 		this.speed  = { x: 0, y: 0, z: 0 }
@@ -38,8 +39,6 @@ Momentum.prototype = {
 
 	start: function() {
 		if(this.points.length <2) return
-
-		if(this.active) this.stop()
 
 		var accel = Math.pow(this.acceleration, 60 / 1000)
 		,   frict = 1 - accel
@@ -110,6 +109,6 @@ Momentum.prototype = {
 		if(!this.active) return
 
 		this.events.emit('stop')
-		this.active = false
+		this.reset() 
 	}
 }
