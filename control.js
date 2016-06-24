@@ -1,7 +1,7 @@
-var	radius	= 300
+var	radius	= 500
 ,	angle	= 0
 ,	speed	= 0.005
-,	amount	= 10
+,	amount	= 20
 
 var myDrag		= new Drag(document)
 ,	myMomentum	= new Momentum
@@ -22,9 +22,11 @@ function animate() {
 		function setAngleOffset(myAngle) {
 			return myAngle = myAngle * 2 * Math.PI
 		}
-		drawObject(myDivs.div[i] , setAngleOffset(i/amount), 0   )
-		drawObject(myDivs2.div[i], setAngleOffset(i/amount), 150 )
-		drawObject(myDivs3.div[i], setAngleOffset(i/amount), -150)
+
+
+		drawObject(myDivs.div[i] , setAngleOffset(i/amount), 0, i === 0)
+		drawObject(myDivs2.div[i], setAngleOffset(i/amount), 400)
+		drawObject(myDivs3.div[i], setAngleOffset(i/amount), -400)
 	}
 	requestAnimationFrame(animate)
 }
@@ -33,17 +35,20 @@ function animate() {
 animate()
 
 
-function drawObject(div, angleOffset, diffHeight) {
-	var	x0 = 0
-	,	y0 = 0
-	,	z0 = 0
+function drawObject(div, angleOffset, diffHeight, flag) {
 
-	var x = x0 - radius * Math.cos(angle + angleOffset)
-	,	y = y0 + diffHeight
-	,	z = z0 + radius * Math.sin(angle + angleOffset)
+
+	var x = -radius * Math.cos(angle + angleOffset)
+	,	y = diffHeight
+	,	z = radius * Math.sin(angle + angleOffset)
+
 
 	var coordinates = [[x, y, z, 1]]
-	var matrix = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
+
+	var matrix =[[1.0,	0.0,	0.0,	0.000],
+				 [0.0,	1.0,	0.0,	0.0],
+				 [0.0,	0.0,	1.0,	-0.0009],
+				 [0.0,	0.0,	0.0,	2]]
 
 	function MultiplyMatrix(A, B) {
 		var rowsA = A.length, colsA = A[0].length
@@ -64,21 +69,24 @@ function drawObject(div, angleOffset, diffHeight) {
 	}
 
 	var result = MultiplyMatrix(coordinates, matrix)
+
+	var perspective = []
+	for (var g = 0; g < 4; g++) {
+		perspective[g] = result[0][g] / result[0][3]
+	}
+	perspective[3] = result[0][3]
+
 	var rad = (angle + angleOffset + Math.PI / 2) / 2
 
-	var scale = Math.abs(Math.sin(rad))
-	//scale = 1
+	var scale = z / radius / 3 + 0.5
 
-	// if(scale < 0.4) scale = 0.4
-	var opacity = Math.abs(Math.sin(rad))
-	//if(opacity < 0.99) opacity = Math.pow(opacity, 3)
-	//opacity = 1
+	var opacity = z / radius / 2 + 0.4
 
-	var dX = result[0][0] + window.innerWidth  / 2
-	,	dZ = result[0][1] + window.innerHeight / 2
-
-	div.style.zIndex = Math.round(result[0][1])
-	div.style.transform = 'translate('+ dX +'px,'+ dZ +'px) scale('+ scale +')'
+	var dX = perspective[0] + window.innerWidth  / 2
+	,	dY = perspective[1] + window.innerHeight / 2
+	//div.textContent = Math.round(opacity*100)/100
+	div.style.zIndex = z + 500
+	div.style.transform = 'translate('+ dX +'px,'+ dY +'px) scale('+ scale +')'
 	div.style.opacity = opacity
 }
 
