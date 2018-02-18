@@ -1,3 +1,7 @@
+import Drag from '../lib/Drag'
+import Momentum from '../lib/Momentum'
+import Divificator from '../lib/Divificator'
+
 var	radius	= 500
 ,	angle	= 0
 ,	speed	= 0.005

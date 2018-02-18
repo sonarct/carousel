@@ -1,0 +1,27 @@
+{
+	"name": "carousel",
+	"version": "1.0.0",
+	"description": "Demonstrates simple matrix transformations. Drag and rotate.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "http-server ./public",
+		"build": "webpack"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sonarct/carousel.git"
+	},
+	"author": "sonarct@gmail.com",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/sonarct/carousel/issues"
+	},
+	"homepage": "https://github.com/sonarct/carousel#readme",
+	"dependencies": {
+		"http-server": "^0.11.1"
+	},
+	"devDependencies": {
+		"webpack": "^3.11.0"
+	}
+}
