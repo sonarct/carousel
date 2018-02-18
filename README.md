@@ -2,4 +2,15 @@
 
 Demonstrates simple matrix transformations. Drag and rotate.
 
-You can try it [here](https://sonarct.github.io/carousel)
+To run project, please, clone repo. Then
+
+```
+cd carousel
+npm i
+npm build
+npm start
+```
+
+And check result on [localhost:8080](http://localhost:8080)
+
+Thank you
